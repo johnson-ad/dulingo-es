@@ -7,6 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { a0Modules } from '@/data/a0-modules';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 import { useProgressStore } from '@/store/useProgressStore';
 
 export default function QuizPage() {

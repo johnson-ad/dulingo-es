@@ -6,10 +6,18 @@ import { levels } from '@/data/levels';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { useProgressStore } from '@/store/useProgressStore';
+import { UserMenu } from '@/components/UserMenu';
+import { useAuth } from '@/hooks/useAuth';
+import { useProgress } from '@/hooks/useProgress';
 
 export default function Home() {
-  const { totalXP, streak, completedModules } = useProgressStore();
+  const { isAuthenticated } = useAuth();
+  const { progress, isLoading } = useProgress();
+
+  // Use database progress if authenticated, otherwise fallback to 0
+  const totalXP = progress?.totalXP || 0;
+  const streak = progress?.streak || 0;
+  const completedModules = progress?.completedModules?.map(m => m.moduleId) || [];
 
   return (
     <main className="min-h-screen pb-20 bg-gradient-to-br from-primary-50 via-blue-50 to-purple-50 relative overflow-hidden">
@@ -51,6 +59,11 @@ export default function Home() {
 
       {/* Header - Modern Hero Section */}
       <header className="relative bg-gradient-to-br from-primary via-blue to-purple text-white shadow-soft-2xl overflow-hidden">
+        {/* User Menu in top right */}
+        <div className="absolute top-4 right-4 z-50">
+          <UserMenu />
+        </div>
+
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30" />
         
         <div className="container mx-auto px-4 py-16 md:py-20 relative z-10">
